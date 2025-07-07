@@ -316,7 +316,7 @@ function saveScreenshot(transparent: boolean) {
   const prevViewportWidth = player.sceneRenderer!.camera.viewportWidth;
   const gl = (player as unknown as SpinePlayerInternal).context.gl;
   const maxTexSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-  const captureSize = Math.min(3000, maxTexSize);
+  const captureSize = Math.min(4500, maxTexSize);
   if (!store.useCurrentCamera) {
     cam.position.x = defaultCameraPos.x;
     cam.position.y = defaultCameraPos.y;
@@ -331,7 +331,7 @@ function saveScreenshot(transparent: boolean) {
 
   const dpr = window.devicePixelRatio || 1;
 
-  const targetWidth = Math.min(3000, maxTexSize);
+  const targetWidth = Math.min(4500, maxTexSize);
   const aspectRatio = canvas.height / canvas.width;
   const targetHeight = Math.floor(targetWidth * aspectRatio);
 
