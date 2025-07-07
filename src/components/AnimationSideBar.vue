@@ -2,10 +2,7 @@
   <div class="w-full md:w-64 md:h-full bg-gray-800 text-white flex flex-col min-h-0">
     <div class="flex-1 min-h-0 px-2 hidden md:flex flex-col gap-2">
       <span class="pt-2">Skins</span>
-      <select
-        v-model="store.selectedSkin"
-        class="bg-gray-700 text-white"
-      >
+      <select v-model="store.selectedSkin" class="bg-gray-700 text-white">
         <option v-for="skin in skins" :key="skin" :value="skin">{{ skin }}</option>
       </select>
       <span>Animations</span>
@@ -65,12 +62,7 @@
         >
           BG Color
         </button>
-        <input
-          ref="colorInput"
-          type="color"
-          class="hidden"
-          @input="onColorChange"
-        />
+        <input ref="colorInput" type="color" class="hidden" @input="onColorChange" />
       </div>
       <div class="p-2 flex gap-2 items-center">
         <button
@@ -86,7 +78,7 @@
           <span>Transparent<br />image/export</span>
         </label>
       </div>
-      <div class="p-2 hidden md:flex">
+      <div class="p-2 md:flex">
         <button
           class="flex-1 bg-gray-600 hover:bg-gray-500 text-white rounded shadow transition px-4 py-2"
           @click="onExport"
@@ -107,48 +99,62 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, ref, watch } from 'vue'
-import { useCharacterStore } from '@/stores/characterStore'
+import { computed, toRefs, ref, watch } from "vue";
+import { useCharacterStore } from "@/stores/characterStore";
 
-import LoadingIcon from '@/components/icons/LoadingIcon.vue';
+import LoadingIcon from "@/components/icons/LoadingIcon.vue";
 
-const props = defineProps<{ animations: string[]; skins: string[]; exporting: boolean; screenshotting: boolean }>()
-const { animations, skins, exporting, screenshotting } = toRefs(props)
+const props = defineProps<{
+  animations: string[];
+  skins: string[];
+  exporting: boolean;
+  screenshotting: boolean;
+}>();
+const { animations, skins, exporting, screenshotting } = toRefs(props);
 
-const store = useCharacterStore()
-const colorInput = ref<HTMLInputElement | null>(null)
-const transparentBg = ref(false)
+const store = useCharacterStore();
+const colorInput = ref<HTMLInputElement | null>(null);
+const transparentBg = ref(false);
 
-const emit = defineEmits(['select', 'reset-camera', 'screenshot', 'export-animation', 'category-change'])
+const emit = defineEmits([
+  "select",
+  "reset-camera",
+  "screenshot",
+  "export-animation",
+  "category-change",
+]);
 
 function select(name: string) {
-  emit('select', name)
-  store.selectedAnimation = name
+  emit("select", name);
+  store.selectedAnimation = name;
 }
 
 function onColorChange(e: Event) {
-  const input = e.target as HTMLInputElement
-  store.backgroundColor = input.value
+  const input = e.target as HTMLInputElement;
+  store.backgroundColor = input.value;
 }
 
 function onScreenshot() {
-  emit('screenshot', transparentBg.value)
+  emit("screenshot", transparentBg.value);
 }
 
 function onExport() {
-  emit('export-animation', transparentBg.value)
+  emit("export-animation", transparentBg.value);
 }
 
-const selectedAnimation = computed(() => store.selectedAnimation)
-const toggleLabel = computed(() => (store.playing ? 'Pause' : 'Play'))
-const charHasUltAnimation = computed(() =>
-  store.characters.find(c => c.id === store.selectedCharacterId)?.cutscene
-)
-const charHasDatingAnimation = computed(() =>
-  store.characters.find(c => c.id === store.selectedCharacterId)?.dating
-)
+const selectedAnimation = computed(() => store.selectedAnimation);
+const toggleLabel = computed(() => (store.playing ? "Pause" : "Play"));
+const charHasUltAnimation = computed(
+  () => store.characters.find((c) => c.id === store.selectedCharacterId)?.cutscene
+);
+const charHasDatingAnimation = computed(
+  () => store.characters.find((c) => c.id === store.selectedCharacterId)?.dating
+);
 
-watch(() => store.animationCategory, () => {
-  emit('category-change');
-});
+watch(
+  () => store.animationCategory,
+  () => {
+    emit("category-change");
+  }
+);
 </script>
