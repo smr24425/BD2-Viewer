@@ -402,7 +402,7 @@ function exportAnimation(transparent: boolean): Promise<void> {
       cam.zoom = Math.max(paddedWidth / canvas.width, paddedHeight / canvas.height);
       cam.update();
     }
-    const mimeType = "video/mp4";
+    const mimeType = "video/webm";
     const stream = canvas.captureStream(fps);
     recorder = new MediaRecorder(stream, {
       mimeType,
@@ -422,7 +422,7 @@ function exportAnimation(transparent: boolean): Promise<void> {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `animation_${store.selectedCharacterId}_${animationName}.mp4`;
+        a.download = `animation_${store.selectedCharacterId}_${animationName}.webm`;
         a.click();
         URL.revokeObjectURL(url);
       }
